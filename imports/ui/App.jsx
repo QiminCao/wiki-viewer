@@ -1,14 +1,17 @@
 import React from "react";
+import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
 import { Container, Input, Form } from "semantic-ui-react";
 import SearchBar from "./SearchBar.jsx";
+import { searchedHistroy } from "../api/history";
 
 class App extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			err: "",
-			links: []
+			links: [],
+			content: []
 		};
 	}
 
@@ -24,19 +27,38 @@ class App extends React.Component {
 
 			console.log(res);
 			this.setState({
-				links: res.links
+				links: res.links,
+				content: res.text
+			});
+		});
+
+		// insert searched word to database
+		Meteor.call("searchedHistroy.insert", word, err => {
+			if (err) {
+				this.setState({
+					error: err
+				});
+				return;
+			}
+
+			this.setState({
+				error: ""
 			});
 		});
 	}
 
 	renderHistory() {
-		
+		return this.props.history.map((item, index) => {
+			return <div key={index}>{item.searchedItem}</div>;
+		});
 	}
 
 	renderLinks() {
-		return this.state.links.map((link, index) => (
-			<div key={index}>{link}</div>
-		));
+		console.log(this.state.links);
+
+		return this.state.links.map((link, index) => {
+			return <div key={index}>{link}</div>;
+		});
 	}
 
 	render() {
@@ -45,6 +67,14 @@ class App extends React.Component {
 				<h1>Welcome to wiki viewer</h1>
 
 				<SearchBar onSubmit={this.onSearchSubmit.bind(this)} />
+
+				<h2>Searched History</h2>
+				{this.renderHistory()}
+
+				<h2>Links</h2>
+				{this.renderLinks()}
+
+				<h2>Content</h2>
 			</Container>
 		);
 	}
@@ -54,11 +84,7 @@ export default withTracker(() => {
 	const handle = Meteor.subscribe("searchedHistroy");
 
 	return {
-		history: searchedHistroy
-			.find({
-				userId: Meteor.userId()
-			})
-			.fetch(),
+		history: searchedHistroy.find({}).fetch(),
 		ready: handle.ready()
 	};
 })(App);

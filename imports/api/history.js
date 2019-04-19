@@ -6,7 +6,7 @@ export const searchedHistroy = new Mongo.Collection("searchedHistroy");
 
 if (Meteor.isServer) {
 	Meteor.publish("searchedHistroy", function() {
-		return searchedHistroy.find({ userId: this.userId });
+		return searchedHistroy.find({});
 	});
 }
 
@@ -14,12 +14,7 @@ Meteor.methods({
 	"searchedHistroy.insert"(searchedItem) {
 		check(searchedItem, String);
 
-		if (!Meteor.userId()) {
-			throw new Meteor.Error("not-authorized");
-		}
-
-		allSearchedWords.insert({
-			userId: this.userId,
+		searchedHistroy.insert({
 			searchedItem: searchedItem
 		});
 	}
