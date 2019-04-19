@@ -53,7 +53,15 @@ class App extends React.Component {
 
 	renderHistory() {
 		return this.props.history.map((item, index) => {
-			return <div key={index}>{item.searchedItem}</div>;
+			return (
+				<Button
+					onClick={e => this.handleClick(e)}
+					key={index}
+					value={item.searchedItem}
+				>
+					{item.searchedItem}
+				</Button>
+			);
 		});
 	}
 
