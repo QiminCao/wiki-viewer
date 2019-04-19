@@ -5,8 +5,6 @@
 
 ## Screenshot
 ![screenshot](public/wiki-viewer.gif)
-![screenshot](public/page1.png)
-![screenshot](public/page2.png)
 
 ## Project Objective
 
