@@ -59,7 +59,11 @@ class App extends React.Component {
 		console.log(this.state.links);
 
 		return this.state.links.map((link, index) => {
-			return <Button key={index}>{link["*"]}</Button>;
+			return (
+				<Button onClick={e => this.handleClick(e)} key={index} value={link["*"]}>
+					{link["*"]} 
+				</Button>
+			);
 		});
 	}
 
@@ -67,6 +71,41 @@ class App extends React.Component {
 		return (
 			<span dangerouslySetInnerHTML={{ __html: this.state.content }} />
 		);
+	}
+
+	handleClick(event) {
+		event.preventDefault();
+
+		console.log(event.target.value);
+
+		Meteor.call("getData", event.target.value, (err, res) => {
+			if (err) {
+				this.setState({
+					error: err
+				});
+				return;
+			}
+
+			console.log(res);
+			this.setState({
+				title: res.title,
+				links: res.links.slice(0, 100),
+				content: res.text["*"]
+			});
+		});
+
+		Meteor.call("searchedHistroy.insert", event.target.value, err => {
+			if (err) {
+				this.setState({
+					error: err
+				});
+				return;
+			}
+
+			this.setState({
+				error: ""
+			});
+		});
 	}
 
 	render() {
