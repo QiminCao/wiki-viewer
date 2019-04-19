@@ -1,5 +1,7 @@
 # Wiki Viewer
 
+## Exam Option: Use 1 hour more of time to finish the exam.
+
 ## Author
 - [Karen Cao](https://qimincao.github.io/HomePage_Karen/)
 
