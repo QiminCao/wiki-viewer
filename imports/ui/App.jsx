@@ -1,7 +1,7 @@
 import React from "react";
 import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
-import { Container, Input, Form } from "semantic-ui-react";
+import { Container, Input, Form, Button } from "semantic-ui-react";
 import SearchBar from "./SearchBar.jsx";
 import { searchedHistroy } from "../api/history";
 
@@ -29,8 +29,8 @@ class App extends React.Component {
 			console.log(res);
 			this.setState({
 				title: res.title,
-				links: res.links,
-				content: res.text
+				links: res.links.slice(0, 100),
+				content: res.text["*"]
 			});
 		});
 
@@ -59,8 +59,14 @@ class App extends React.Component {
 		console.log(this.state.links);
 
 		return this.state.links.map((link, index) => {
-			return <div key={index}>{link}</div>;
+			return <Button key={index}>{link["*"]}</Button>;
 		});
+	}
+
+	renderContent() {
+		return (
+			<span dangerouslySetInnerHTML={{ __html: this.state.content }} />
+		);
 	}
 
 	render() {
@@ -80,6 +86,7 @@ class App extends React.Component {
 				{this.renderLinks()}
 
 				<h2>Content</h2>
+				{this.renderContent()}
 			</Container>
 		);
 	}
