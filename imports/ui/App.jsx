@@ -10,6 +10,7 @@ class App extends React.Component {
 		super(props);
 		this.state = {
 			err: "",
+			title: "",
 			links: [],
 			content: []
 		};
@@ -27,6 +28,7 @@ class App extends React.Component {
 
 			console.log(res);
 			this.setState({
+				title: res.title,
 				links: res.links,
 				content: res.text
 			});
@@ -70,6 +72,9 @@ class App extends React.Component {
 
 				<h2>Searched History</h2>
 				{this.renderHistory()}
+
+				<h2>Title</h2>
+				{this.state.title}
 
 				<h2>Links</h2>
 				{this.renderLinks()}
