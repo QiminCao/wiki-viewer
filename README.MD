@@ -31,6 +31,7 @@ Open your browser and visit http://localhost:3000 and you should see the applica
 
 - Platform: [Meteor](https://www.meteor.com/) with React - An open source platform for 
 web, mobile, and desktop.
+- API: [Wikipedia API](https://www.npmjs.com/package/node-wikipedia)
 
 ## License
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
