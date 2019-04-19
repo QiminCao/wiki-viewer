@@ -3,6 +3,8 @@ import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
 import { Container, Input, Form, Button } from "semantic-ui-react";
 import SearchBar from "./SearchBar.jsx";
+import TypingAnimation from "./type.js";
+
 import { searchedHistroy } from "../api/history";
 
 class App extends React.Component {
@@ -56,12 +58,14 @@ class App extends React.Component {
 	}
 
 	renderLinks() {
-		console.log(this.state.links);
-
 		return this.state.links.map((link, index) => {
 			return (
-				<Button onClick={e => this.handleClick(e)} key={index} value={link["*"]}>
-					{link["*"]} 
+				<Button
+					onClick={e => this.handleClick(e)}
+					key={index}
+					value={link["*"]}
+				>
+					{link["*"]}
 				</Button>
 			);
 		});
@@ -75,8 +79,6 @@ class App extends React.Component {
 
 	handleClick(event) {
 		event.preventDefault();
-
-		console.log(event.target.value);
 
 		Meteor.call("getData", event.target.value, (err, res) => {
 			if (err) {
@@ -110,22 +112,27 @@ class App extends React.Component {
 
 	render() {
 		return (
-			<Container>
-				<h1>Welcome to wiki viewer</h1>
-
-				<SearchBar onSubmit={this.onSearchSubmit.bind(this)} />
-
-				<h2>Searched History</h2>
-				{this.renderHistory()}
-
-				<h2>Title</h2>
-				{this.state.title}
-
-				<h2>Links</h2>
-				{this.renderLinks()}
-
-				<h2>Content</h2>
-				{this.renderContent()}
+			<Container textAlign="center">
+				<header>
+					<img
+						src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Wikipedia_svg_logo.svg/500px-Wikipedia_svg_logo.svg.png"
+						className="App-logo"
+						alt="logo"
+					/>
+					<h1>Welcome to wiki viewer</h1>
+				</header>
+				<main>
+					<TypingAnimation /> <br />
+					<SearchBar onSubmit={this.onSearchSubmit.bind(this)} />
+					<h2>Searched History</h2>
+					{this.renderHistory()}
+					<h2>Title</h2>
+					{this.state.title}
+					<h2>Links</h2>
+					{this.renderLinks()}
+					<h2>Content</h2>
+					{this.renderContent()}
+				</main>
 			</Container>
 		);
 	}
